@@ -1,4 +1,4 @@
 # NTC project dependencies
-PyQt6>=6.6.0
+PyQt6>=6.4.2
 psutil>=5.9.8
 sqlite-utils>=3.36
