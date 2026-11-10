@@ -1,0 +1,26 @@
+<!-- src/ntc/ui/settings_dialog.ui -->
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SettingsDialog</class>
+ <widget class="QDialog" name="SettingsDialog">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>440</width><height>260</height></rect></property>
+  <property name="windowTitle"><string>Настройки</string></property>
+  <layout class="QVBoxLayout">
+   <item>
+    <layout class="QFormLayout">
+     <item row="0" column="0"><widget class="QLabel"><property name="text"><string>Тема:</string></property></widget></item>
+     <item row="0" column="1"><widget class="QCheckBox" name="dark_check"><property name="text"><string>Тёмная тема</string></property></widget></item>
+     <item row="1" column="0"><widget class="QLabel"><property name="text"><string>Уведомления:</string></property></widget></item>
+     <item row="1" column="1"><widget class="QCheckBox" name="notify_check"><property name="text"><string>Глобально</string></property></widget></item>
+     <item row="2" column="0" colspan="2"><widget class="QLabel"><property name="text"><string>Mute (через запятую):</string></property></widget></item>
+     <item row="3" column="0" colspan="2"><widget class="QLineEdit" name="muted_edit"/></item>
+    </layout>
+   </item>
+   <item><widget class="QDialogButtonBox" name="button_box">
+    <property name="standardButtons"><set>QDialogButtonBox::Ok|QDialogButtonBox::Cancel</set></property>
+   </widget></item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

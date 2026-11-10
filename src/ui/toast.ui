@@ -1,0 +1,15 @@
+<!-- src/ntc/ui/toast.ui -->
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Toast</class>
+ <widget class="QWidget" name="Toast">
+  <layout class="QVBoxLayout">
+   <item><widget class="QLabel" name="title_label"/></item>
+   <item><widget class="QLabel" name="body_label">
+    <property name="wordWrap"><bool>true</bool></property>
+   </widget></item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

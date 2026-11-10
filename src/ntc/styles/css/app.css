@@ -1,0 +1,44 @@
+/* src/ntc/styles/css/app.css */
+QWidget {
+    background-color: #1E1E1E;
+    color: #E0E0E0;
+    font-family: "Segoe UI", "Ubuntu", sans-serif;
+    font-size: 13px;
+}
+QPushButton {
+    background-color: #252526;
+    border: 1px solid #3C3C3C;
+    border-radius: 6px;
+    padding: 6px 14px;
+    color: #E0E0E0;
+}
+QPushButton:hover { background-color: #2E2E2F; border-color: #3B82F6; }
+QPushButton:pressed { background-color: #3B82F6; color: #FFFFFF; }
+QPushButton:disabled { color: #6E6E6E; border-color: #2A2A2A; }
+QLineEdit, QComboBox {
+    background-color: #252526;
+    border: 1px solid #3C3C3C;
+    border-radius: 4px;
+    padding: 5px 8px;
+    color: #E0E0E0;
+}
+QLineEdit:focus, QComboBox:focus { border-color: #3B82F6; }
+QTableView {
+    background-color: #1E1E1E;
+    alternate-background-color: #1E1E1E;
+    gridline-color: #3C3C3C;
+    selection-background-color: #3B82F6;
+    selection-color: #FFFFFF;
+    border: 1px solid #3C3C3C;
+    border-radius: 6px;
+}
+QHeaderView::section {
+    background-color: #252526;
+    color: #A0A0A0;
+    border: none;
+    border-bottom: 1px solid #3C3C3C;
+    padding: 6px 8px;
+}
+QStatusBar { background-color: #252526; color: #A0A0A0; }
+QMenu { background-color: #252526; border: 1px solid #3C3C3C; }
+QMenu::item:selected { background-color: #3B82F6; color: #FFFFFF; }

@@ -1,0 +1,4 @@
+/* src/ntc/styles/css/dialogs/settings_dialog.css */
+#SettingsDialog { background-color: #1E1E1E; }
+#SettingsDialog QLabel { color: #A0A0A0; }
+#SettingsDialog QCheckBox { color: #E0E0E0; }

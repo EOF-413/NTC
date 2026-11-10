@@ -1,0 +1,8 @@
+# src/requirements.txt
+PyQt6==6.4.2
+psutil>=5.9
+pydivert>=2.1 ; sys_platform == "win32"
+
+# dev
+pyinstaller>=5.13
+ruff>=0.4

@@ -1,0 +1,4 @@
+/* src/ntc/styles/css/dialogs/blacklist_dialog.css */
+#BlacklistDialog { background-color: #1E1E1E; }
+#BlacklistDialog QTableView { background-color: #1E1E1E; }
+#BlacklistDialog QPushButton { min-width: 90px; }

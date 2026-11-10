@@ -1,0 +1,10 @@
+/* src/ntc/styles/css/widgets/metric_card.css */
+#MetricCard {
+    background-color: #252526;
+    border: 1px solid #3C3C3C;
+    border-radius: 8px;
+}
+#MetricName { color: #E0E0E0; font-weight: 600; font-size: 14px; }
+#MetricValues { color: #A0A0A0; font-size: 12px; }
+#MetricStatus { color: #22C55E; font-size: 14px; }
+#MetricStatus[active="false"] { color: #6E6E6E; }

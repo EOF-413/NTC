@@ -1,0 +1,21 @@
+# src/pyproject.toml
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "SIM", "RUF"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/ntc/ui/ui_*.py" = ["N802", "N815", "N806"]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ntc"
+version = "1.0.0"
+requires-python = ">=3.11"

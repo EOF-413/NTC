@@ -1,0 +1,41 @@
+<!-- src/ntc/ui/main_window.ui -->
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>1100</width><height>720</height></rect></property>
+  <property name="windowTitle"><string>Network Traffic Controller</string></property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="root_layout">
+    <item>
+     <layout class="QHBoxLayout" name="toolbar_layout">
+      <item><widget class="QPushButton" name="btn_refresh"><property name="text"><string>Обновить</string></property></widget></item>
+      <item><widget class="QPushButton" name="btn_clear"><property name="text"><string>Очистить</string></property></widget></item>
+      <item><widget class="QPushButton" name="btn_blacklist"><property name="text"><string>Чёрный список</string></property></widget></item>
+      <item><widget class="QPushButton" name="btn_settings"><property name="text"><string>Настройки</string></property></widget></item>
+      <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+      <item><widget class="QLabel" name="lbl_privilege"><property name="text"><string>🔒 Мониторинг</string></property></widget></item>
+     </layout>
+    </item>
+    <item>
+     <widget class="TrafficChart" name="traffic_chart" native="true"/>
+    </item>
+    <item>
+     <widget class="QTableView" name="table_view">
+      <property name="selectionBehavior"><enum>QAbstractItemView::SelectRows</enum></property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TrafficChart</class>
+   <extends>QWidget</extends>
+   <header>ntc.widgets.traffic_chart</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

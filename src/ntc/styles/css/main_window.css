@@ -1,0 +1,11 @@
+/* src/ntc/styles/css/windows/main_window.css */
+#MainWindow { background-color: #1E1E1E; }
+#lbl_privilege {
+    color: #A0A0A0;
+    padding: 4px 10px;
+    border: 1px solid #3C3C3C;
+    border-radius: 12px;
+}
+#lbl_total { color: #A0A0A0; padding-right: 8px; }
+#btn_blacklist { border-color: #EF4444; }
+#btn_blacklist:hover { background-color: #2A1A1A; }

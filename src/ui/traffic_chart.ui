@@ -1,0 +1,8 @@
+<!-- src/ntc/ui/traffic_chart.ui -->
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TrafficChart</class>
+ <widget class="QWidget" name="TrafficChart"/>
+ <resources/>
+ <connections/>
+</ui>

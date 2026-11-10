@@ -1,0 +1,6 @@
+/* src/ntc/styles/css/widgets/traffic_chart.css */
+#TrafficChart {
+    background-color: #1E1E1E;
+    border: 1px solid #3C3C3C;
+    border-radius: 6px;
+}

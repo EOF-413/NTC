@@ -1,0 +1,29 @@
+<!-- src/ntc/ui/add_rule_dialog.ui -->
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AddRuleDialog</class>
+ <widget class="QDialog" name="AddRuleDialog">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>420</width><height>180</height></rect></property>
+  <property name="windowTitle"><string>Добавить правило</string></property>
+  <layout class="QVBoxLayout">
+   <item>
+    <layout class="QFormLayout">
+     <item row="0" column="0"><widget class="QLabel"><property name="text"><string>Тип:</string></property></widget></item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="type_combo">
+       <item><property name="text"><string>Процесс</string></property></item>
+       <item><property name="text"><string>IP-адрес</string></property></item>
+      </widget>
+     </item>
+     <item row="1" column="0"><widget class="QLabel"><property name="text"><string>Значение:</string></property></widget></item>
+     <item row="1" column="1"><widget class="QLineEdit" name="value_edit"/></item>
+    </layout>
+   </item>
+   <item><widget class="QDialogButtonBox" name="button_box">
+    <property name="standardButtons"><set>QDialogButtonBox::Ok|QDialogButtonBox::Cancel</set></property>
+   </widget></item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

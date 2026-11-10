@@ -1,0 +1,14 @@
+<!-- src/ntc/ui/metric_card.ui -->
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MetricCard</class>
+ <widget class="QWidget" name="MetricCard">
+  <layout class="QVBoxLayout">
+   <item><widget class="QLabel" name="name_label"/></item>
+   <item><widget class="QLabel" name="values_label"/></item>
+   <item><widget class="QLabel" name="status_label"/></item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
