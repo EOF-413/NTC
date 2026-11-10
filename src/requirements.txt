@@ -1,5 +1,6 @@
 # src/requirements.txt
 PyQt6==6.4.2
+PyQt6-Qt6==6.4.2
 psutil>=5.9
 pydivert>=2.1 ; sys_platform == "win32"
 

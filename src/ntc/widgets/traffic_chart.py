@@ -1,10 +1,9 @@
 # src/ntc/widgets/traffic_chart.py
 """Кастомный график скоростей upload/download (paintEvent)."""
 from collections import deque
-from pathlib import Path
 
 from PyQt6.QtCore import QPointF, Qt
-from PyQt6.QtGui import QColor, QPaintEvent, QPainter, QPen, QPolygonF
+from PyQt6.QtGui import QColor, QPainter, QPaintEvent, QPalette, QPen, QPolygonF
 from PyQt6.QtWidgets import QWidget
 
 from ntc.ui.ui_traffic_chart import Ui_TrafficChart
@@ -16,8 +15,6 @@ class TrafficChart(QWidget, Ui_TrafficChart):
     MAX_POINTS = 60
     COLOR_UP = "#3B82F6"
     COLOR_DOWN = "#22C55E"
-    COLOR_BG = "#1E1E1E"
-    COLOR_GRID = "#2A2A2A"
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
@@ -25,13 +22,6 @@ class TrafficChart(QWidget, Ui_TrafficChart):
         self.setMinimumHeight(160)
         self._upload: deque[float] = deque(maxlen=self.MAX_POINTS)
         self._download: deque[float] = deque(maxlen=self.MAX_POINTS)
-        self._load_css()
-
-    def _load_css(self) -> None:
-        path = Path(__file__).parent.parent / "styles" / "css" / "widgets" / "traffic_chart.css"
-        if path.exists():
-            with open(path, "r", encoding="utf-8") as f:
-                self.setStyleSheet(f.read())
 
     def push(self, upload: float, download: float) -> None:
         """Добавляет точку и перерисовывает."""
@@ -42,14 +32,20 @@ class TrafficChart(QWidget, Ui_TrafficChart):
     def paintEvent(self, event: QPaintEvent) -> None:  # noqa: N802
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-        painter.fillRect(self.rect(), QColor(self.COLOR_BG))
+        painter.fillRect(self.rect(), self.palette().color(self.backgroundRole()))
 
         w, h = self.width(), self.height()
         if w <= 0 or h <= 0:
             return
 
         # сетка
-        painter.setPen(QPen(QColor(self.COLOR_GRID), 1, Qt.PenStyle.DotLine))
+        painter.setPen(
+            QPen(
+                self.palette().color(QPalette.ColorRole.Mid),
+                1,
+                Qt.PenStyle.DotLine,
+            )
+        )
         for i in range(1, 4):
             y = h * i / 4
             painter.drawLine(0, int(y), w, int(y))

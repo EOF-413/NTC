@@ -1,8 +1,6 @@
 # src/ntc/widgets/metric_card.py
 """Карточка метрики процесса."""
-from pathlib import Path
-
-from PyQt6.QtWidgets import QLabel, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QWidget
 
 from ntc.ui.ui_metric_card import Ui_MetricCard
 
@@ -13,14 +11,7 @@ class MetricCard(QWidget, Ui_MetricCard):
     def __init__(self, name: str = "", parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self.setupUi(self)
-        self._load_css()
         self.update_values(name, 0.0, 0.0, active=False)
-
-    def _load_css(self) -> None:
-        path = Path(__file__).parent.parent / "styles" / "css" / "widgets" / "metric_card.css"
-        if path.exists():
-            with open(path, "r", encoding="utf-8") as f:
-                self.setStyleSheet(f.read())
 
     def update_values(
         self, name: str, sent: float, recv: float, *, active: bool = True

@@ -1,12 +1,16 @@
 # src/ntc/controllers/traffic_table_model.py
 """QAbstractTableModel-адаптер для QTableView."""
+from typing import ClassVar
+
 from PyQt6.QtCore import QAbstractTableModel, QModelIndex, Qt
 
 from ntc.models.connection_info import ConnectionInfo
 
 
-def _fmt_bytes(value: float) -> str:
+def _fmt_bytes(value: float | None) -> str:
     """Форматирует скорость в человекочитаемый вид."""
+    if value is None:
+        return "—"
     units = ["Б", "КБ", "МБ", "ГБ"]
     v = float(value)
     i = 0
@@ -19,7 +23,9 @@ def _fmt_bytes(value: float) -> str:
 class TrafficTableModel(QAbstractTableModel):
     """Табличная модель монитора трафика."""
 
-    HEADERS = ["Процесс", "PID", "Sent", "Recv", "Conn", "Remote"]
+    HEADERS: ClassVar[tuple[str, ...]] = (
+        "Процесс", "PID", "Отправлено", "Получено", "Соединения", "Удалённый адрес"
+    )
 
     def __init__(self) -> None:
         super().__init__()
@@ -36,7 +42,7 @@ class TrafficTableModel(QAbstractTableModel):
         self.beginResetModel()
         self._rows = [
             ConnectionInfo(
-                name=r.name, pid=r.pid, sent=0.0, recv=0.0,
+                name=r.name, pid=r.pid, sent=None, recv=None,
                 connections=r.connections, remote=r.remote,
             )
             for r in self._rows
@@ -53,6 +59,12 @@ class TrafficTableModel(QAbstractTableModel):
         self, section: int, orientation: Qt.Orientation,
         role: int = Qt.ItemDataRole.DisplayRole,
     ) -> object:
+        if (
+            role == Qt.ItemDataRole.ToolTipRole
+            and orientation == Qt.Orientation.Horizontal
+            and section in (2, 3)
+        ):
+            return "psutil предоставляет общий сетевой трафик, но не скорость по процессам"
         if role != Qt.ItemDataRole.DisplayRole:
             return None
         if orientation == Qt.Orientation.Horizontal:

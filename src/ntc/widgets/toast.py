@@ -1,7 +1,5 @@
 # src/ntc/widgets/toast.py
 """Всплывающее уведомление без фокуса."""
-from pathlib import Path
-
 from PyQt6.QtCore import QEasingCurve, QPropertyAnimation, Qt, QTimer
 from PyQt6.QtWidgets import QWidget
 
@@ -22,17 +20,11 @@ class Toast(QWidget, Ui_Toast):
         )
         self.setupUi(self)
         self.setFixedSize(self.WIDTH, self.HEIGHT)
+        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.title_label.setText(title)
         self.body_label.setText(body)
-        self._load_css()
         self._place()
         self._animate()
-
-    def _load_css(self) -> None:
-        path = Path(__file__).parent.parent / "styles" / "css" / "widgets" / "toast.css"
-        if path.exists():
-            with open(path, "r", encoding="utf-8") as f:
-                self.setStyleSheet(f.read())
 
     def _place(self) -> None:
         screen = self.screen()

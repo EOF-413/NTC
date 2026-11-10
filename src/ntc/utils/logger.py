@@ -4,8 +4,6 @@ import logging
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
-_INITIALIZED = False
-
 
 def setup_logger(name: str = "ntc") -> logging.Logger:
     """Возвращает именованный логгер с файловым и консольным обработчиком.
@@ -16,10 +14,8 @@ def setup_logger(name: str = "ntc") -> logging.Logger:
     Returns:
         Настроенный logger.
     """
-    global _INITIALIZED  # noqa: PLW0603
-
     logger = logging.getLogger(name)
-    if _INITIALIZED:
+    if logger.handlers:
         return logger
 
     logger.setLevel(logging.DEBUG)
@@ -42,5 +38,4 @@ def setup_logger(name: str = "ntc") -> logging.Logger:
     ch.setFormatter(fmt)
     logger.addHandler(ch)
 
-    _INITIALIZED = True
     return logger

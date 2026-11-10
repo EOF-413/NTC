@@ -1,7 +1,5 @@
 # src/ntc/dialogs/settings_dialog.py
 """Диалог настроек."""
-from pathlib import Path
-
 from PyQt6.QtWidgets import QDialog
 
 from ntc.models.settings import Settings
@@ -17,13 +15,6 @@ class SettingsDialog(QDialog, Ui_SettingsDialog):
         self.dark_check.setChecked(settings.dark_theme)
         self.notify_check.setChecked(settings.notifications_global)
         self.muted_edit.setText(", ".join(settings.muted_apps))
-        self._load_css()
-
-    def _load_css(self) -> None:
-        path = Path(__file__).parent.parent / "styles" / "css" / "dialogs" / "settings_dialog.css"
-        if path.exists():
-            with open(path, "r", encoding="utf-8") as f:
-                self.setStyleSheet(f.read())
 
     def get_settings(self) -> Settings:
         """Возвращает настройки из UI."""

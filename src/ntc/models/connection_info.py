@@ -9,7 +9,7 @@ class ConnectionInfo:
 
     name: str
     pid: int
-    sent: float
-    recv: float
+    sent: float | None
+    recv: float | None
     connections: int
     remote: str

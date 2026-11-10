@@ -1,6 +1,6 @@
 # src/ntc/dialogs/blacklist_dialog.py
 """Диалог управления чёрным списком."""
-from pathlib import Path
+from typing import ClassVar
 
 from PyQt6.QtCore import QAbstractTableModel, QModelIndex, Qt
 from PyQt6.QtWidgets import QDialog, QMessageBox
@@ -12,7 +12,7 @@ from ntc.ui.ui_blacklist_dialog import Ui_BlacklistDialog
 
 
 class _BlacklistTableModel(QAbstractTableModel):
-    HEADERS = ["ID", "Тип", "Значение", "Активно"]
+    HEADERS: ClassVar[tuple[str, ...]] = ("ID", "Тип", "Значение", "Активно")
 
     def __init__(self, entries: list[BlacklistEntry]) -> None:
         super().__init__()
@@ -30,12 +30,14 @@ class _BlacklistTableModel(QAbstractTableModel):
     def columnCount(self, parent=QModelIndex()) -> int:  # noqa: N802
         return 0 if parent.isValid() else len(self.HEADERS)
 
-    def headerData(self, section, orientation, role=Qt.ItemDataRole.DisplayRole):  # noqa: N802
+    def headerData(  # noqa: N802
+        self, section, orientation, role=Qt.ItemDataRole.DisplayRole
+    ):
         if role != Qt.ItemDataRole.DisplayRole or orientation != Qt.Orientation.Horizontal:
             return None
         return self.HEADERS[section]
 
-    def data(self, index, role=Qt.ItemDataRole.DisplayRole):  # noqa: N802
+    def data(self, index, role=Qt.ItemDataRole.DisplayRole):
         if not index.isValid() or role != Qt.ItemDataRole.DisplayRole:
             return None
         e = self._entries[index.row()]
@@ -63,17 +65,9 @@ class BlacklistDialog(QDialog, Ui_BlacklistDialog):
         self._db = db
         self._model = _BlacklistTableModel(db.list_blacklist())
         self.table_view.setModel(self._model)
-        self._load_css()
-
         self.btn_add.clicked.connect(self._on_add)
         self.btn_delete.clicked.connect(self._on_delete)
         self.btn_close.clicked.connect(self.accept)
-
-    def _load_css(self) -> None:
-        path = Path(__file__).parent.parent / "styles" / "css" / "dialogs" / "blacklist_dialog.css"
-        if path.exists():
-            with open(path, "r", encoding="utf-8") as f:
-                self.setStyleSheet(f.read())
 
     def _on_add(self) -> None:
         dlg = AddRuleDialog(self)
@@ -85,7 +79,7 @@ class BlacklistDialog(QDialog, Ui_BlacklistDialog):
         try:
             self._db.add_blacklist(BlacklistEntry(type=rule_type, value=value))
             self._model.refresh(self._db.list_blacklist())
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             QMessageBox.critical(self, "Ошибка БД", str(exc))
 
     def _on_delete(self) -> None:
@@ -98,5 +92,5 @@ class BlacklistDialog(QDialog, Ui_BlacklistDialog):
         try:
             self._db.delete_blacklist(entry.id)
             self._model.refresh(self._db.list_blacklist())
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             QMessageBox.critical(self, "Ошибка БД", str(exc))

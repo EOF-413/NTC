@@ -3,6 +3,8 @@
 from pathlib import Path
 
 from PyQt6.QtCore import QObject
+from PyQt6.QtGui import QColor, QPalette
+from PyQt6.QtWidgets import QApplication
 
 from ntc.controllers.traffic_table_model import TrafficTableModel
 from ntc.models.incident import Incident
@@ -33,6 +35,7 @@ class MainController(QObject):
         self._db = DatabaseService(base_dir / "ntc.db")
         self._settings_svc = SettingsService(base_dir / "settings.json")
         self._settings = self._settings_svc.load()
+        self._apply_theme()
 
         self._monitor = MonitorService(interval=1.5)
         self._blocker = BlockerService(self._db)
@@ -53,10 +56,13 @@ class MainController(QObject):
         self._window.closing.connect(self.shutdown)
 
         self._monitor.metrics_ready.connect(self._on_metrics)
+        self._monitor.network_metrics_ready.connect(self._on_network_metrics)
         self._monitor.error_occurred.connect(self._on_error)
 
         self._blocker.connection_blocked.connect(self._on_blocked)
         self._blocker.error_occurred.connect(self._on_error)
+        self._blocker.status_changed.connect(self._window.set_blocking_active)
+        self._window.exit_requested.connect(self._on_exit)
 
     def _start_monitoring(self) -> None:
         self._monitor.start()
@@ -80,25 +86,25 @@ class MainController(QObject):
 
     def _on_metrics(self, rows: list) -> None:
         self._model.update_rows(rows)
-        total_sent = sum(r.sent for r in rows)
-        total_recv = sum(r.recv for r in rows)
-        self._window.update_total(total_sent + total_recv)
-        self._window.update_chart(total_sent, total_recv)
 
-    def _on_blocked(self, process: str, ip: str, port: int) -> None:
-        if not self._settings.notifications_global:
-            return
-        if process.lower() in {m.lower() for m in self._settings.muted_apps}:
-            return
-        self._window.show_toast(process, ip, port)
+    def _on_network_metrics(self, sent: float, recv: float) -> None:
+        self._window.update_total(sent + recv)
+        self._window.update_chart(sent, recv)
+
+    def _on_blocked(self, process: str, ip: str, port: int, pid: int) -> None:
         try:
             self._db.add_incident(
-                Incident(process=process, pid=0, remote_ip=ip,
+                Incident(process=process, pid=pid, remote_ip=ip,
                          remote_port=port, action="blocked")
             )
             logger.info("Инцидент: %s → %s:%d", process, ip, port)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             logger.error("Не удалось сохранить инцидент: %s", exc)
+        if not self._settings.notifications_global:
+            return
+        if process.casefold() in {m.casefold() for m in self._settings.muted_apps}:
+            return
+        self._window.show_toast(process, ip, port)
 
     def _on_error(self, message: str) -> None:
         logger.error("Сервисная ошибка: %s", message)
@@ -114,12 +120,45 @@ class MainController(QObject):
 
         sc = SettingsController(self._settings_svc, self._settings, self._window)
         self._settings = sc.open()
+        self._apply_theme()
+
+    def _apply_theme(self) -> None:
+        app = QApplication.instance()
+        if app is None:
+            return
+        theme_file = "app.css" if self._settings.dark_theme else "app_light.css"
+        theme_path = self._base / "ntc" / "styles" / "css" / theme_file
+        try:
+            palette = app.palette()
+            palette.setColor(
+                QPalette.ColorRole.Window,
+                QColor("#1E1E1E" if self._settings.dark_theme else "#F5F7FA"),
+            )
+            palette.setColor(
+                QPalette.ColorRole.WindowText,
+                QColor("#E0E0E0" if self._settings.dark_theme else "#20242A"),
+            )
+            palette.setColor(
+                QPalette.ColorRole.Mid,
+                QColor("#2A2A2A" if self._settings.dark_theme else "#D8DEE8"),
+            )
+            app.setPalette(palette)
+            app.setStyleSheet(theme_path.read_text(encoding="utf-8"))
+        except OSError as exc:
+            logger.error("Не удалось загрузить тему %s: %s", theme_path, exc)
+
+    def _on_exit(self) -> None:
+        self._window.exit_app()
+        QApplication.quit()
 
     # ----- lifecycle -----
     def shutdown(self) -> None:
         """Останавливает сервисы перед закрытием окна."""
+        if getattr(self, "_shutdown", False):
+            return
+        self._shutdown = True
         try:
             self._monitor.stop()
             self._blocker.stop()
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             logger.error("Ошибка остановки: %s", exc)

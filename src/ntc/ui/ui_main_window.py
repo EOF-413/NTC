@@ -60,7 +60,7 @@ class Ui_MainWindow:
 
         self.statusbar = QStatusBar(main_window)
         self.statusbar.setObjectName("statusbar")
-        self.lbl_total = QLabel("Всего: 0 Б/с", main_window)
+        self.lbl_total = QLabel("Сеть: 0 Б/с", main_window)
         self.lbl_total.setObjectName("lbl_total")
         self.statusbar.addPermanentWidget(self.lbl_total)
         main_window.setStatusBar(self.statusbar)
