@@ -9,6 +9,9 @@ from ntc.controllers.main_controller import MainController
 from ntc.utils.logger import setup_logger
 from ntc.windows.main_window import MainWindow
 
+import faulthandler
+faulthandler.enable()
+
 logger = setup_logger("main")
 
 
