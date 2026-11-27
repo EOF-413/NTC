@@ -5,7 +5,7 @@
 
 ## Стек
 - Python 3.11+
-- PyQt6 6.4.2
+- PyQt6 6.9.1
 - psutil
 - pydivert (Windows) / iptables (Linux)
 - SQLite (хранение правил и инцидентов), JSON (настройки)
